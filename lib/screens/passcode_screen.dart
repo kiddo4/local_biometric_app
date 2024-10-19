@@ -31,17 +31,17 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
       bool isDeviceSupported = await auth.isDeviceSupported();
 
       // Get the available biometrics
-      List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+      List<BiometricType> availableBiometrics =
+          await auth.getAvailableBiometrics();
 
       // Check if fingerprint or face authentication is available
-      if (canCheckBiometrics &&
-          isDeviceSupported &&
-          (availableBiometrics.contains(BiometricType.fingerprint) ||
-              availableBiometrics.contains(BiometricType.face))) {
+      if (canCheckBiometrics) {
         setState(() {
           isBiometricAvailable = true;
         });
       }
+      print(canCheckBiometrics);
+      print(isDeviceSupported);
     } on PlatformException catch (e) {
       // Handle any errors and print for debugging
       print("Error checking biometric availability: $e");
@@ -70,7 +70,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   void deleteDigit() {
     if (confirmPasscode.isNotEmpty) {
       setState(() {
-        confirmPasscode = confirmPasscode.substring(0, confirmPasscode.length - 1);
+        confirmPasscode =
+            confirmPasscode.substring(0, confirmPasscode.length - 1);
       });
     }
   }
@@ -108,9 +109,11 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: confirmPasscode.length > index ? Colors.yellow : Colors.grey,
+              color:
+                  confirmPasscode.length > index ? Colors.yellow : Colors.grey,
             ),
-            color: confirmPasscode.length > index ? Colors.yellow : Colors.white,
+            color:
+                confirmPasscode.length > index ? Colors.yellow : Colors.white,
           ),
           child: Center(
             child: Text(
@@ -201,16 +204,17 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               const SizedBox(height: 40),
               buildPasscodeField(),
               const SizedBox(height: 20),
-              if (isBiometricAvailable)
-                IconButton(
-                  icon: const Icon(
-                    Icons.fingerprint,
-                    size: 40,
-                    color: Colors.blueAccent,
-                  ),
-                  onPressed: authenticateWithBiometrics,
-                  tooltip: 'Authenticate with Face ID or Fingerprint',
-                ),
+              isBiometricAvailable
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.fingerprint,
+                        size: 40,
+                        color: Colors.blueAccent,
+                      ),
+                      onPressed: authenticateWithBiometrics,
+                      tooltip: 'Authenticate with Face ID or Fingerprint',
+                    )
+                  : SizedBox(),
               const SizedBox(height: 20),
               Expanded(child: buildKeypad()),
             ],
