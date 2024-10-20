@@ -63,6 +63,12 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
           } else {
             // Passcode is incorrect, reset it
             confirmPasscode = '';
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: const Duration(seconds: 3),
+                backgroundColor: Colors.red,
+                content: Text('Incorrect passcode. Try again.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16))));
 
             print('Incorrect passcode. Try again.');
           }
@@ -96,7 +102,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
             .push(MaterialPageRoute(builder: (context) => HomeScreeen()));
         print('Biometric authentication successful!');
         // Proceed to the next action, e.g., unlocking content or navigating
-      }
+      } 
     } on PlatformException catch (e) {
       // Handle any errors during authentication
       print('Biometric authentication error: $e');
@@ -190,7 +196,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Enter Passcode',
+                'Welcome back Smith',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -199,7 +205,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Enter passcode to view balance',
+                'Please enter passcode or use biometric to unlock vault',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
