@@ -1,3 +1,4 @@
+import 'package:biometric_flutter/screens/home_screeen.dart';
 import 'package:biometric_flutter/widgets/keypad_button_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,10 +57,13 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
         if (confirmPasscode.length == passcodeLength) {
           if (confirmPasscode == widget.passcode) {
             // Passcode is correct, proceed
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomeScreeen()));
             print('Passcode is correct!');
           } else {
             // Passcode is incorrect, reset it
             confirmPasscode = '';
+
             print('Incorrect passcode. Try again.');
           }
         }
@@ -88,6 +92,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
 
       if (authenticated) {
         // Biometric authentication was successful
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomeScreeen()));
         print('Biometric authentication successful!');
         // Proceed to the next action, e.g., unlocking content or navigating
       }

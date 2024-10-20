@@ -1,3 +1,4 @@
+import 'package:biometric_flutter/screens/passcode_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -20,32 +21,24 @@ class _HomeScreeenState extends State<HomeScreeen> {
       body: SafeArea(
         child: SizedBox(
           width: MediaQuery.sizeOf(context).width,
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Your Balance',
+              Text(
+                'Your Vault balance is',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _isAuthenticated
-                  ? const Text(
-                      '£200',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : const Text(
-                      '*******',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
+              Text(
+                '£ 20,000',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             ],
           ),
         ),
@@ -56,28 +49,8 @@ class _HomeScreeenState extends State<HomeScreeen> {
   Widget _authButton() {
     return FloatingActionButton(
       onPressed: () async {
-        if (!_isAuthenticated) {
-          final bool canAuthenticateWithBiometrics =
-              await _auth.canCheckBiometrics;
-          print(canAuthenticateWithBiometrics);
-          if (canAuthenticateWithBiometrics) {
-            try {
-              final bool didAuthenticate = await _auth.authenticate(
-                  localizedReason:
-                      'Authentication needed to show account balance',
-                  options: const AuthenticationOptions(biometricOnly: true));
-              setState(() {
-                _isAuthenticated = didAuthenticate;
-              });
-            } catch (e) {
-              print(e);
-            }
-          }
-        } else {
-          setState(() {
-            _isAuthenticated = false;
-          });
-        }
+      Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => PasscodeScreen(passcode: '1234',)));
       },
       child: Icon(_isAuthenticated ? Icons.lock : Icons.lock_open),
     );
